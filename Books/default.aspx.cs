@@ -34,6 +34,7 @@ namespace Books
             }
             else
             {
+                SqlData.SelectParameters.Clear();
                 SqlData.SelectCommand = @"SELECT * FROM [Books] where BookTitle like @title";
                 SqlData.SelectParameters.Add("title", "%" + txt_bookNM.Value.Trim() + "%" );
             }
