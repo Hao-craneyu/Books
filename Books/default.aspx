@@ -31,7 +31,7 @@
         <div id="search" style="margin-top:20px;">
             以書名進行查尋：
             <input type="text" id="txt_bookNM" value="" runat="server" />
-            <asp:Button Text="查尋" runat="server" />
+            <asp:Button Text="查尋" runat="server" ID="But_Search" OnClick="But_Search_Click" />
         </div>
         <div style="margin-top:40px">
              <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="NO" DataSourceID="SqlData" OnRowCommand="GridView1_RowCommand">

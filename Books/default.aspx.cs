@@ -28,8 +28,15 @@ namespace Books
 
         private void RD_List()
         {
-            
-            SqlData.SelectCommand = @"SELECT * FROM [Books]";
+            if (string.IsNullOrEmpty(txt_bookNM.Value.Trim()))
+            {
+                SqlData.SelectCommand = @"SELECT * FROM [Books]";
+            }
+            else
+            {
+                SqlData.SelectCommand = @"SELECT * FROM [Books] where BookTitle like @title";
+                SqlData.SelectParameters.Add("title", "%" + txt_bookNM.Value.Trim() + "%" );
+            }
 
         }
 
@@ -175,5 +182,10 @@ namespace Books
         }
 
         #endregion
+
+        protected void But_Search_Click(object sender, EventArgs e)
+        {
+            RD_List();
+        }
     }
 }
