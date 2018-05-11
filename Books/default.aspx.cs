@@ -28,15 +28,33 @@ namespace Books
 
         private void RD_List()
         {
+            SqlCommand Cmd = new SqlCommand();
+
             if (string.IsNullOrEmpty(txt_bookNM.Value.Trim()))
             {
-                SqlData.SelectCommand = @"SELECT * FROM [Books]";
+                //SqlData.SelectCommand = @"SELECT * FROM [Books]";
+                Cmd.CommandText = @"SELECT * FROM Books";
             }
             else
             {
-                SqlData.SelectParameters.Clear();
-                SqlData.SelectCommand = @"SELECT * FROM [Books] where BookTitle like @title";
-                SqlData.SelectParameters.Add("title", "%" + txt_bookNM.Value.Trim() + "%" );
+                //SqlData.SelectParameters.Clear();
+                //SqlData.SelectCommand = @"SELECT * FROM [Books] where BookTitle like @title";
+                //SqlData.SelectParameters.Add("title", "%" + txt_bookNM.Value.Trim() + "%" );
+                Cmd.Parameters.Clear();
+                Cmd.CommandText = @"SELECT * FROM [Books] where BookTitle like @title";
+                Cmd.Parameters.AddWithValue("title", "%" + txt_bookNM.Value.Trim() + "%");
+
+            }
+
+            var (results, dt, Msg ) = db.Select(Cmd);
+            if (results)
+            {
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
+            }
+            else
+            {
+
             }
 
         }
