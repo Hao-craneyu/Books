@@ -15,9 +15,8 @@
 	<![endif]-->
 	<script src="https://code.jquery.com/jquery.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script></head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <body>
-    <form id="form1" name="myForm" runat="server" ng-controller="validateCtrl">
+    <form id="form1" name="myForm" runat="server">
         <div class="container" style="margin-top:20px;">
             <div class="row">
                 <div class="col-sm-12">
@@ -27,7 +26,7 @@
                     <div class="form-group form-inline">
                         <label class="control-label">書名：</label>
                         <input id="txt_Booktitle" name="txt_Booktitle" runat="server" type="text" 
-                            class="form-control" placeholder="請填寫書名" ng-model="BookName" required />
+                            class="form-control" placeholder="請填寫書名" ng-model="BookName" />
                     </div>
                     <div class="form-group form-inline">
                         <label class="control-label">ISBN：</label>
@@ -67,7 +66,8 @@
                             CssClass="btn btn-primary" />
                     </div>
                     <div style="margin-top:40px">
-                         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="NO" OnRowCommand="GridView1_RowCommand">
+                         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="NO"
+                             DataSourceID="SqlData" OnRowCommand="GridView1_RowCommand">
                               <Columns>
                                    <asp:BoundField DataField="NO" HeaderText="NO" InsertVisible="False" ReadOnly="True" 
                                        SortExpression="NO" Visible="false"/>

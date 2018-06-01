@@ -32,30 +32,30 @@ namespace Books
 
             if (string.IsNullOrEmpty(txt_bookNM.Value.Trim()))
             {
-                //SqlData.SelectCommand = @"SELECT * FROM [Books]";
-                Cmd.CommandText = @"SELECT * FROM Books";
+                SqlData.SelectCommand = @"SELECT * FROM [Books]";
+                //Cmd.CommandText = @"SELECT * FROM Books";
             }
             else
             {
-                //SqlData.SelectParameters.Clear();
-                //SqlData.SelectCommand = @"SELECT * FROM [Books] where BookTitle like @title";
-                //SqlData.SelectParameters.Add("title", "%" + txt_bookNM.Value.Trim() + "%" );
-                Cmd.Parameters.Clear();
-                Cmd.CommandText = @"SELECT * FROM [Books] where BookTitle like @title";
-                Cmd.Parameters.AddWithValue("title", "%" + txt_bookNM.Value.Trim() + "%");
+                SqlData.SelectParameters.Clear();
+                SqlData.SelectCommand = @"SELECT * FROM [Books] where BookTitle like @title";
+                SqlData.SelectParameters.Add("title", "%" + txt_bookNM.Value.Trim() + "%");
+                //Cmd.Parameters.Clear();
+                //Cmd.CommandText = @"SELECT * FROM [Books] where BookTitle like @title";
+                //Cmd.Parameters.AddWithValue("title", "%" + txt_bookNM.Value.Trim() + "%");
 
             }
 
-            var (results, dt, Msg ) = db.Select(Cmd);
-            if (results)
-            {
-                GridView1.DataSource = dt;
-                GridView1.DataBind();
-            }
-            else
-            {
+            //var (results, dt, Msg ) = db.Select(Cmd);
+            //if (results)
+            //{
+            //    GridView1.DataSource = dt;
+            //    GridView1.DataBind();
+            //}
+            //else
+            //{
 
-            }
+            //}
 
         }
 
@@ -71,34 +71,43 @@ namespace Books
             {
                 try
                 {
-                    Cmd.CommandText = @"Insert into Books (BookTitle, ISBN, Arthur, Publicher, PublichYear, Price) values
+                    SqlData.InsertParameters.Clear();
+                    SqlData.InsertCommand = @"Insert into Books (BookTitle, ISBN, Arthur, Publicher, PublichYear, Price) values
                                         (@title, @isbn, @arthur, @publicher, @year, @price)";
+                    //Cmd.CommandText = @"Insert into Books (BookTitle, ISBN, Arthur, Publicher, PublichYear, Price) values
+                    //                    (@title, @isbn, @arthur, @publicher, @year, @price)";
 
-                    //Cmd.Parameters.AddWithValue("title", txt_Booktitle.Value);
-                    Cmd.Parameters.AddWithValue("isbn", txt_isbn.Value);
-                    Cmd.Parameters.AddWithValue("arthur", txt_Arthur.Value);
-                    Cmd.Parameters.AddWithValue("publicher", txt_Publisher.Value);
-                    //Cmd.Parameters.AddWithValue("year", txt_Year.Value);
-                    //Cmd.Parameters.AddWithValue("price", txt_Price.Value);
+                    SqlData.InsertParameters.Add("isbn", txt_isbn.Value);
+                    SqlData.InsertParameters.Add("arthur", txt_Arthur.Value);
+                    SqlData.InsertParameters.Add("publicher", txt_Publisher.Value);
+                    SqlData.InsertParameters.Add("title", txt_Booktitle.Value);
+                    SqlData.InsertParameters.Add("year", DbType.String ,txt_Year.Value);
+                    SqlData.InsertParameters.Add("price", DbType.Decimal, txt_Price.Value);
+                    
+                    SqlData.Insert();
 
-                    Cmd.Parameters.Add("title", SqlDbType.NVarChar);
-                    Cmd.Parameters["title"].Value = txt_Booktitle.Value;
+                    //Cmd.Parameters.AddWithValue("isbn", txt_isbn.Value);
+                    //Cmd.Parameters.AddWithValue("arthur", txt_Arthur.Value);
+                    //Cmd.Parameters.AddWithValue("publicher", txt_Publisher.Value);
 
-                    Cmd.Parameters.Add("year", SqlDbType.VarChar, 4);
-                    Cmd.Parameters["year"].Value = txt_Year.Value;
+                    //Cmd.Parameters.Add("title", SqlDbType.NVarChar);
+                    //Cmd.Parameters["title"].Value = txt_Booktitle.Value;
 
-                    Cmd.Parameters.Add("price", SqlDbType.Decimal, 5).Value = txt_Price.Value;
+                    //Cmd.Parameters.Add("year", SqlDbType.VarChar, 4);
+                    //Cmd.Parameters["year"].Value = txt_Year.Value;
 
-                    var (results, Msg) = db.Query(Cmd);
+                    //Cmd.Parameters.Add("price", SqlDbType.Decimal, 5).Value = txt_Price.Value;
 
-                    if (results)
-                    {
-                        Response.Redirect("default.aspx");
-                    }
-                    else
-                    {
-                        Lab_Msg.Text = Msg;
-                    }
+                    //var (results, Msg) = db.Query(Cmd);
+
+                    //if (results)
+                    //{
+                    //    Response.Redirect("default.aspx");
+                    //}
+                    //else
+                    //{
+                    //    Lab_Msg.Text = Msg;
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -111,32 +120,46 @@ namespace Books
             {
                 try
                 {
-                    Cmd.CommandText = @"Update Books set BookTitle = @title, ISBN = @isbn, Arthur = @arthur, 
+                    SqlData.UpdateParameters.Clear();
+                    SqlData.UpdateCommand = @"Update Books set BookTitle = @title, ISBN = @isbn, Arthur = @arthur, 
                                         Publicher = @publicher, PublichYear =  @year, Price = @price where No = @no";
 
-                    Cmd.Parameters.AddWithValue("isbn", txt_isbn.Value);
-                    Cmd.Parameters.AddWithValue("arthur", txt_Arthur.Value);
-                    Cmd.Parameters.AddWithValue("publicher", txt_Publisher.Value);
+                    //Cmd.CommandText = @"Update Books set BookTitle = @title, ISBN = @isbn, Arthur = @arthur, 
+                    //                    Publicher = @publicher, PublichYear =  @year, Price = @price where No = @no";
 
-                    Cmd.Parameters.Add("title", SqlDbType.NVarChar);
-                    Cmd.Parameters["title"].Value = txt_Booktitle.Value;
+                    SqlData.UpdateParameters.Add("isbn", txt_isbn.Value);
+                    SqlData.UpdateParameters.Add("arthur", txt_Arthur.Value);
+                    SqlData.UpdateParameters.Add("publicher", txt_Publisher.Value);
+                    SqlData.UpdateParameters.Add("title", DbType.String, txt_Booktitle.Value);
+                    SqlData.UpdateParameters.Add("year", DbType.String, txt_Year.Value);
+                    SqlData.UpdateParameters.Add("price", DbType.Decimal, txt_Price.Value);
+                    SqlData.UpdateParameters.Add("no", Hid_ModifyNo.Value);
 
-                    Cmd.Parameters.Add("year", SqlDbType.VarChar, 4);
-                    Cmd.Parameters["year"].Value = txt_Year.Value;
+                    SqlData.Update();
 
-                    Cmd.Parameters.Add("price", SqlDbType.Decimal, 5).Value = txt_Price.Value;
-                    Cmd.Parameters.AddWithValue("no", Hid_ModifyNo.Value);
+                    //Cmd.Parameters.AddWithValue("isbn", txt_isbn.Value);
+                    //Cmd.Parameters.AddWithValue("arthur", txt_Arthur.Value);
+                    //Cmd.Parameters.AddWithValue("publicher", txt_Publisher.Value);
 
-                    var (results, Msg) = db.Query(Cmd);
+                    //Cmd.Parameters.Add("title", SqlDbType.NVarChar);
+                    //Cmd.Parameters["title"].Value = txt_Booktitle.Value;
 
-                    if (results)
-                    {
-                        Response.Redirect("default.aspx");
-                    }
-                    else
-                    {
-                        Lab_Msg.Text = Msg;
-                    }
+                    //Cmd.Parameters.Add("year", SqlDbType.VarChar, 4);
+                    //Cmd.Parameters["year"].Value = txt_Year.Value;
+
+                    //Cmd.Parameters.Add("price", SqlDbType.Decimal, 5).Value = txt_Price.Value;
+                    //Cmd.Parameters.AddWithValue("no", Hid_ModifyNo.Value);
+
+                    //var (results, Msg) = db.Query(Cmd);
+
+                    //if (results)
+                    //{
+                    //    Response.Redirect("default.aspx");
+                    //}
+                    //else
+                    //{
+                    //    Lab_Msg.Text = Msg;
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -178,21 +201,27 @@ namespace Books
                     //string no = (row.FindControl("Hid_No") as HiddenField).Value;
                     string no = ((HiddenField)row.FindControl("Hid_No")).Value;
 
-                    Cmd.CommandText = @"Delete from Books where NO = @no";
-                    //Cmd.Parameters.AddWithValue("no", row.Cells[0].Text);
-                    Cmd.Parameters.AddWithValue("no", no);
+                    SqlData.DeleteParameters.Clear();
+                    SqlData.DeleteCommand = @"Delete from Books where NO = @no";
 
-                    var (results, Msg) = db.Query(Cmd);
+                    SqlData.DeleteParameters.Add("no", no);
 
-                    if (results)
-                    {
-                        Response.Redirect("default.aspx");
-                    }
-                    else
-                    {
-                        Lab_Msg.Text = Msg;
+                    SqlData.Delete();
 
-                    }
+                    //Cmd.CommandText = @"Delete from Books where NO = @no";
+                    //Cmd.Parameters.AddWithValue("no", no);
+
+                    //var (results, Msg) = db.Query(Cmd);
+
+                    //if (results)
+                    //{
+                    //    Response.Redirect("default.aspx");
+                    //}
+                    //else
+                    //{
+                    //    Lab_Msg.Text = Msg;
+
+                    //}
 
                     break;
                 default:
